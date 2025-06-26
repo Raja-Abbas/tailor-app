@@ -31,14 +31,14 @@ export default function TabLayout() {
               marginHorizontal: 5,
               marginBottom: 10,
               borderRadius: 50,
-              height: 66,
+              height: 60,
             },
             default: {
               backgroundColor: '#3f428f',
               marginHorizontal: 5,
               marginBottom: 10,
               borderRadius: 50,
-              height: 66,
+              height: 60,
             },
           }),
         }}

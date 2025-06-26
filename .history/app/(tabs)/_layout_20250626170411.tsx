@@ -23,6 +23,7 @@ export default function TabLayout() {
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
           headerShown: false,
+          tabBarButton:,
           tabBarBackground: TabBarBackground,
           tabBarStyle: Platform.select({
             ios: {
@@ -31,14 +32,12 @@ export default function TabLayout() {
               marginHorizontal: 5,
               marginBottom: 10,
               borderRadius: 50,
-              height: 66,
             },
             default: {
               backgroundColor: '#3f428f',
               marginHorizontal: 5,
               marginBottom: 10,
               borderRadius: 50,
-              height: 66,
             },
           }),
         }}

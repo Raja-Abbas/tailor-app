@@ -23,6 +23,7 @@ export default function TabLayout() {
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
           headerShown: false,
+          tabBarButton: HapticTab,
           tabBarBackground: TabBarBackground,
           tabBarStyle: Platform.select({
             ios: {
@@ -30,15 +31,12 @@ export default function TabLayout() {
               backgroundColor: '#3f428f',
               marginHorizontal: 5,
               marginBottom: 10,
-              borderRadius: 50,
-              height: 66,
             },
             default: {
               backgroundColor: '#3f428f',
               marginHorizontal: 5,
               marginBottom: 10,
-              borderRadius: 50,
-              height: 66,
+              borderRadius:
             },
           }),
         }}
@@ -48,7 +46,7 @@ export default function TabLayout() {
           options={{
             title: "Home",
             tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="house.fill" color={'#fff'} />
+              <IconSymbol size={28} name="house.fill" color={color} />
             ),
           }}
         />
@@ -60,7 +58,7 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => (
               <Image
                 source={sewingMachineImage}
-                style={{ width: 28, height: 28, tintColor: "#fff" }}
+                style={{ width: 28, height: 28, tintColor: color }}
               />
             ),
           }}
@@ -73,7 +71,7 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => (
               <Image
                 source={CartImage}
-                style={{ width: 28, height: 28, tintColor: "#fff" }}
+                style={{ width: 28, height: 28, tintColor: color }}
               />
             ),
           }}
@@ -86,7 +84,7 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => (
               <Image
                 source={ProfileImage}
-                style={{ width: 28, height: 28, tintColor: "#fff" }}
+                style={{ width: 28, height: 28, tintColor: color }}
               />
             ),
           }}

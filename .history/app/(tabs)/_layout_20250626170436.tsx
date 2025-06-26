@@ -21,7 +21,7 @@ export default function TabLayout() {
       <Header />
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+          tabBarActiveTintColor: Colors[colorScheme ?? "#fff"].tint,
           headerShown: false,
           tabBarBackground: TabBarBackground,
           tabBarStyle: Platform.select({
@@ -31,14 +31,12 @@ export default function TabLayout() {
               marginHorizontal: 5,
               marginBottom: 10,
               borderRadius: 50,
-              height: 66,
             },
             default: {
               backgroundColor: '#3f428f',
               marginHorizontal: 5,
               marginBottom: 10,
               borderRadius: 50,
-              height: 66,
             },
           }),
         }}

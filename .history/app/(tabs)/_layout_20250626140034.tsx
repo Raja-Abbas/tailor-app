@@ -9,6 +9,7 @@ import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
 import sewingMachineImage from '@/assets/images/sewing-machine-1.png';
+import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import CartImage from '../../assets/images/cart.png';
 import ProfileImage from '../../assets/images/user.png';
@@ -23,23 +24,14 @@ export default function TabLayout() {
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
           headerShown: false,
+          tabBarButton: HapticTab,
           tabBarBackground: TabBarBackground,
           tabBarStyle: Platform.select({
             ios: {
+              // Use a transparent background on iOS to show the blur effect
               position: "absolute",
-              backgroundColor: '#3f428f',
-              marginHorizontal: 5,
-              marginBottom: 10,
-              borderRadius: 50,
-              height: 66,
             },
-            default: {
-              backgroundColor: '#3f428f',
-              marginHorizontal: 5,
-              marginBottom: 10,
-              borderRadius: 50,
-              height: 66,
-            },
+            default: {},
           }),
         }}
       >
@@ -48,7 +40,7 @@ export default function TabLayout() {
           options={{
             title: "Home",
             tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="house.fill" color={'#fff'} />
+              <IconSymbol size={28} name="house.fill" color={color} />
             ),
           }}
         />
@@ -60,7 +52,7 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => (
               <Image
                 source={sewingMachineImage}
-                style={{ width: 28, height: 28, tintColor: "#fff" }}
+                style={{ width: 28, height: 28, tintColor: color }}
               />
             ),
           }}
@@ -73,7 +65,7 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => (
               <Image
                 source={CartImage}
-                style={{ width: 28, height: 28, tintColor: "#fff" }}
+                style={{ width: 28, height: 28, tintColor: color }}
               />
             ),
           }}
@@ -86,7 +78,7 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => (
               <Image
                 source={ProfileImage}
-                style={{ width: 28, height: 28, tintColor: "#fff" }}
+                style={{ width: 28, height: 28, tintColor: color }}
               />
             ),
           }}

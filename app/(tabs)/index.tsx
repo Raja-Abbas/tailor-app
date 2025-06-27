@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import { RootStackParamList } from '@/types';
 import { useNavigation } from '@react-navigation/native';
 import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';

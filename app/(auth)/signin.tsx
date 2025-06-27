@@ -41,7 +41,7 @@ export default function SignIn() {
         <Text style={styles.buttonText}>{loading ? 'Loading...' : 'Sign In'}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.link} onPress={() => router.replace('/signup')}>
-        <Text style={styles.linkText}>Don't have an account? Sign Up</Text>
+        <Text style={styles.linkText}>Don&apos;t have an account? Sign Up</Text>
       </TouchableOpacity>
     </View>
   );
@@ -53,6 +53,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    width: 300,
+    minWidth: 500,
+    margin: 'auto',
   },
   title: {
     fontSize: 24,

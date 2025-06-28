@@ -12,4 +12,6 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     persistSession: true,
     detectSessionInUrl: false,
   },
-}); 
+});
+
+export const useSupabase = () => supabase;

@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     width: 300,
-    minWidth: 500,
+    minWidth: 300,
     margin: 'auto',
   },
   title: {

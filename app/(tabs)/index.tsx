@@ -83,10 +83,29 @@ export default function HomeScreen() {
       <Text style={tw`text-[16px] font-semibold mb-4 ml-4`}>Category</Text>
       <View style={tw`flex-row flex-wrap gap-[27px] justify-center`}>
         {categories.map((item) => (
-          <View key={item.id} style={tw`min-w-[135px] bg-white p-[6px] rounded-[5px] justify-between items-center`}>
-            <Image source={item.image} style={tw`w-[50px] h-[50px] rounded-[5px] mb-2`} />
-            <Text style={tw`text-[13px] font-normal text-center`}>{item.name}</Text>
-          </View>
+          <TouchableOpacity 
+            key={item.id} 
+            onPress={() => {
+              if (item.name === 'Men') {
+                navigation.navigate('mens');
+              } else if (item.name === 'Women') {
+                navigation.navigate('womens');
+              } else if (item.name === 'Kids') {
+                navigation.navigate('kids');
+              } else if (item.name === 'Give Measurements') {
+                navigation.navigate('measurements');
+              } else if (item.name === 'Fabric collections') {
+                navigation.navigate('fabrics');
+              } else if (item.name === 'Alter your clothes') {
+                navigation.navigate('alter');
+              }
+            }}
+          >
+            <View style={tw`min-w-[135px] bg-white p-[6px] rounded-[5px] justify-between items-center`}>
+              <Image source={item.image} style={tw`w-[50px] h-[50px] rounded-[5px] mb-2`} />
+              <Text style={tw`text-[13px] font-normal text-center`}>{item.name}</Text>
+            </View>
+          </TouchableOpacity>
         ))}
       </View>
       <View style={tw`flex-row justify-between items-center mx-4 mt-[32px] mb-[19px]`}>

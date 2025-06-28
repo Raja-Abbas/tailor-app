@@ -21,7 +21,6 @@ export default function Fabrics() {
             if (error) {
                 console.error("Error fetching Fabrics:", error);
             } else {
-                console.log("Fabrics fetched:", Fabrics);
                 setFabrics(Fabrics as Fabrics[]);
             }
         };

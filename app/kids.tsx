@@ -21,7 +21,6 @@ export default function Kids() {
             if (error) {
                 console.error("Error fetching Kids:", error);
             } else {
-                console.log("Kids fetched:", Kids);
                 setKids(Kids as Kids[]);
             }
         };

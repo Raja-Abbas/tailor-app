@@ -21,7 +21,6 @@ export default function Women() {
             if (error) {
                 console.error("Error fetching Women:", error);
             } else {
-                console.log("Women fetched:", Women);
                 setWomen(Women as Women[]);
             }
         };

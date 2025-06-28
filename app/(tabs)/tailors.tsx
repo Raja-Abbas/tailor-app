@@ -25,7 +25,6 @@ export default function Tailors() {
       if (error) {
         console.error("Error fetching tailors:", error);
       } else {
-        console.log("Tailors fetched:", Tailors);
         setTailors(Tailors as Tailor[]);
       }
     };

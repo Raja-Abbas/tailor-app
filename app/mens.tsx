@@ -21,7 +21,6 @@ export default function Men() {
             if (error) {
                 console.error("Error fetching Men:", error);
             } else {
-                console.log("Men fetched:", Men);
                 setMen(Men as Men[]);
             }
         };

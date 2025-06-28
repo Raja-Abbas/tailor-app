@@ -1,8 +1,8 @@
-import { ScrollView, Text, TextInput, View, Pressable, Alert } from "react-native";
-import tw from "twrnc";
-import { useState } from "react";
 import { useSupabase } from "@/hooks/supabase";
 import { useRouter } from "expo-router";
+import { useState } from "react";
+import { Alert, Pressable, ScrollView, Text, TextInput } from "react-native";
+import tw from "twrnc";
 
 export default function SelectAddress() {
   const [form, setForm] = useState({
@@ -24,8 +24,12 @@ export default function SelectAddress() {
 
     if (userError || !user) {
       Alert.alert("Error", "User not authenticated");
+      console.log("User not authenticated:", userError);
+      router.replace('/signin');
       return;
     }
+
+    console.log("User:", user);
 
     const { error } = await supabase.from("Orders").insert({
       user_id: user.id,
@@ -38,7 +42,9 @@ export default function SelectAddress() {
 
     if (error) {
       Alert.alert("Error", error.message);
+      console.log("Insertion error:", error);
     } else {
+      console.log("Navigating to order summary");
       router.push({
         pathname: "/order-summary",
         params: {

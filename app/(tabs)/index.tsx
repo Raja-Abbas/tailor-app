@@ -53,6 +53,7 @@ type Tailor = {
 export default function HomeScreen() {
   const navigation = useNavigation<RootStackParamList>();
   const [topTailors, setTopTailors] = useState<Tailor[]>([]);
+  const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
   const supabase: SupabaseClient = useSupabase();
 
   useEffect(() => {
@@ -85,6 +86,7 @@ export default function HomeScreen() {
         {categories.map((item) => (
           <TouchableOpacity 
             key={item.id} 
+            activeOpacity={0.7}
             onPress={() => {
               if (item.name === 'Men') {
                 navigation.navigate('mens');
@@ -100,8 +102,13 @@ export default function HomeScreen() {
                 navigation.navigate('alter');
               }
             }}
+            onPressIn={() => setHoveredItemId(item.id)}
+            onPressOut={() => setHoveredItemId(null)}
           >
-            <View style={tw`min-w-[135px] bg-white p-[6px] rounded-[5px] justify-between items-center`}>
+            <View style={[
+              tw`min-w-[135px] p-[6px] rounded-[5px] justify-between items-center`,
+              { backgroundColor: hoveredItemId === item.id ? '#E5E7EB' : '#FFFFFF' }
+            ]}>
               <Image source={item.image} style={tw`w-[50px] h-[50px] rounded-[5px] mb-2`} />
               <Text style={tw`text-[13px] font-normal text-center`}>{item.name}</Text>
             </View>

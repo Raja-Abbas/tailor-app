@@ -1,6 +1,9 @@
 /* eslint-disable import/no-unresolved */
+import { useSupabase } from "@/hooks/supabase";
 import { RootStackParamList } from '@/types';
 import { useNavigation } from '@react-navigation/native';
+import { SupabaseClient } from "@supabase/supabase-js";
+import { useEffect, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
 
@@ -37,38 +40,38 @@ const categories = [
   },
 ];
 
-const recommendedTailors = [
-  {
-    id: '1',
-    name: 'Tailor A',
-    image: require('../../assets/images/user.png'),
-    rating: '4.5',
-    description: 'Expert in men\'s suits and formal wear.',
-    location: 'Downtown',
-    distance: '1.2 km',
-  },
-  {
-    id: '2',
-    name: 'Tailor B',
-    image: require('../../assets/images/user.png'),
-    rating: '4.7',
-    description: 'Specializes in women\'s dresses and alterations.',
-    location: 'Uptown',
-    distance: '2.5 km',
-  },
-  {
-    id: '3',
-    name: 'Tailor C',
-    image: require('../../assets/images/user.png'),
-    rating: '4.3',
-    description: 'Best for kids\' clothing and school uniforms.',
-    location: 'Midtown',
-    distance: '3.0 km',
-  },
-];
+type Tailor = {
+  id: string;
+  name: string;
+  image: string;
+  rating: string;
+  description: string;
+  location: string;
+  distance: string;
+};
 
 export default function HomeScreen() {
   const navigation = useNavigation<RootStackParamList>();
+  const [topTailors, setTopTailors] = useState<Tailor[]>([]);
+  const supabase: SupabaseClient = useSupabase();
+
+  useEffect(() => {
+    const fetchTopTailors = async () => {
+      let { data: Tailors, error } = await supabase
+        .from("Tailors")
+        .select("*")
+        .order("rating", { ascending: false })
+        .limit(5);
+
+      if (error) {
+        console.error("Error fetching tailors:", error);
+      } else {
+        setTopTailors(Tailors as Tailor[]);
+      }
+    };
+
+    fetchTopTailors();
+  }, [supabase]);
 
   return (
     <ScrollView style={tw`flex-1`}>
@@ -87,15 +90,15 @@ export default function HomeScreen() {
         ))}
       </View>
       <View style={tw`flex-row justify-between items-center mx-4 mt-[32px] mb-[19px]`}>
-        <Text style={tw`text-[16px] font-semibold`}>Recommended Tailors</Text>
+        <Text style={tw`text-[16px] font-semibold`}>Top 5 Tailors</Text>
         <TouchableOpacity onPress={() => navigation.navigate('tailors')}>
           <Text style={tw`text-[14px] text-blue-500`}>See All</Text>
         </TouchableOpacity>
       </View>
       <View>
-        {recommendedTailors.map((item) => (
+        {topTailors.map((item) => (
           <View key={item.id} style={tw`flex-row items-center bg-white p-4 mb-4 mx-4 rounded-[10px] shadow-sm`}>
-            <Image source={item.image} style={tw`w-[50px] h-[50px] rounded-full mr-4`} />
+            <Image source={{ uri: item.image }} style={tw`w-[50px] h-[50px] rounded-full mr-4`} />
             <View style={tw`flex-1`}>
               <Text style={tw`text-[14px] font-semibold`}>★ {item.rating}</Text>
               <Text style={tw`text-[16px] font-semibold`}>{item.name}</Text>

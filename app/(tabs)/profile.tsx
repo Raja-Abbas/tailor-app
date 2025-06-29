@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { supabase } from "@/hooks/supabase";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import {
   Button,
   Modal,
@@ -16,7 +18,7 @@ export default function Profile() {
   const [activeSection, setActiveSection] = useState("");
   const [personalInfo, setPersonalInfo] = useState({
     name: "John Doe",
-    email: "john.doe@example.com",
+    email: "",
     phone: "+1234567890",
   });
   const [address, setAddress] = useState({
@@ -34,6 +36,18 @@ export default function Profile() {
     notifications: "On",
     language: "English",
   });
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchUserEmail = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setPersonalInfo((prev) => ({ ...prev, email: user.email || "" }));
+      }
+    };
+
+    fetchUserEmail();
+  }, []);
 
   const handleSave = () => {
     setModalVisible(false);
@@ -60,6 +74,7 @@ export default function Profile() {
               onChangeText={(text) =>
                 setPersonalInfo({ ...personalInfo, email: text })
               }
+              editable={false}
             />
             <TextInput
               style={tw`border border-gray-300 p-2 mb-2`}
@@ -68,6 +83,20 @@ export default function Profile() {
                 setPersonalInfo({ ...personalInfo, phone: text })
               }
             />
+            <TouchableOpacity
+              style={tw`bg-red-500 p-2 rounded-lg mt-4`}
+              onPress={async () => {
+                const { error } = await supabase.auth.signOut();
+                if (error) {
+                  alert(`Logout failed: ${error.message}`);
+                } else {
+                  alert('Logged out successfully!');
+                  router.replace('/(auth)');
+                }
+              }}
+            >
+              <Text style={tw`text-white text-center`}>Logout</Text>
+            </TouchableOpacity>
           </View>
         );
       case "Address":

@@ -116,7 +116,11 @@ export default function HomeScreen() {
       </View>
       <View>
         {topTailors.map((item) => (
-          <View key={item.id} style={tw`flex-row items-center bg-white p-4 mb-4 mx-4 rounded-[10px] shadow-sm`}>
+          <TouchableOpacity 
+            key={item.id} 
+            onPress={() => navigation.navigate('measurements', { tailor: JSON.stringify(item) })}
+            style={tw`flex-row items-center bg-white p-4 mb-4 mx-4 rounded-[10px] shadow-sm`}
+          >
             <Image source={{ uri: item.image }} style={tw`w-[50px] h-[50px] rounded-full mr-4`} />
             <View style={tw`flex-1`}>
               <Text style={tw`text-[14px] font-semibold`}>★ {item.rating}</Text>
@@ -125,7 +129,7 @@ export default function HomeScreen() {
               <Text style={tw`text-[14px] text-gray-600`}>{item.location}</Text>
               <Text style={tw`text-[14px] text-gray-600`}>{item.distance} away</Text>
             </View>
-          </View>
+          </TouchableOpacity>
         ))}
       </View>
     </ScrollView>

@@ -20,21 +20,16 @@ const categories = [
   },
   {
     id: '3',
-    name: 'Alter your clothes',
-    image: require('../../assets/images/ruler-combined-3.png'),
-  },
-  {
-    id: '4',
     name: 'Men',
     image: require('../../assets/images/ruler-combined-4.png'),
   },
   {
-    id: '5',
+    id: '4',
     name: 'Women',
     image: require('../../assets/images/ruler-combined-5.png'),
   },
   {
-    id: '6',
+    id: '5',
     name: 'Kids',
     image: require('../../assets/images/ruler-combined-6.png'),
   },
@@ -98,8 +93,6 @@ export default function HomeScreen() {
                 navigation.navigate('measurements');
               } else if (item.name === 'Fabric collections') {
                 navigation.navigate('fabrics');
-              } else if (item.name === 'Alter your clothes') {
-                navigation.navigate('alter');
               }
             }}
             onPressIn={() => setHoveredItemId(item.id)}

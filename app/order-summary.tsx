@@ -1,10 +1,22 @@
+import { useNavigation } from '@react-navigation/native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ScrollView, Text, View, Pressable, Alert } from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import tw from 'twrnc';
 
 export default function OrderSummary() {
   const { name, phone, email, address, deliveryDate } = useLocalSearchParams();
   const router = useRouter();
+  const navigation = useNavigation();
+
+  const handleBookTailor = () => {
+    navigation.navigate('measurements', {
+      name,
+      phone,
+      email,
+      address,
+      deliveryDate,
+    });
+  };
 
   return (
     <ScrollView style={tw`flex-1 bg-white`} contentContainerStyle={tw`p-4`}>
@@ -28,7 +40,7 @@ export default function OrderSummary() {
       </View>
 
       <Pressable
-        onPress={() => Alert.alert("Booked", "Tailor will be assigned soon!")}
+        onPress={handleBookTailor}
         style={tw`bg-blue-600 py-3 rounded-lg`}
       >
         <Text style={tw`text-white text-center font-semibold text-base`}>

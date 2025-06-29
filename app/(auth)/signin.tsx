@@ -10,12 +10,10 @@ export default function SignIn() {
 
   const handleSignIn = async () => {
     setLoading(true);
-    console.log("Email:", email, "Password:", password); // Log credentials for debugging
 
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       alert(`Sign-in failed: ${error.message}`);
-      console.error("Sign-in error:", error);
     } else {
       alert('Signed in successfully!');
       router.replace('/(tabs)'); // Redirect to the tabs screen

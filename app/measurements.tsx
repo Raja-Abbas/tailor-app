@@ -1,7 +1,8 @@
 import { useSupabase } from "@/hooks/supabase";
 import { SupabaseClient } from "@supabase/supabase-js";
+import { useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
 
 type Tailor = {
@@ -30,7 +31,21 @@ const Measurements = () => {
     armLength: '',
     biceps: '',
   });
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const supabase: SupabaseClient = useSupabase();
+  const { name, phone, email, address, deliveryDate: paramDeliveryDate } = useLocalSearchParams();
+  const [selectedLocation, setSelectedLocation] = useState<{ latitude: number, longitude: number } | null>(null);
+  const [userName, setUserName] = useState<string | null>(name || null);
+  const [userEmail, setUserEmail] = useState<string | null>(email || null);
+  const [userAddress, setUserAddress] = useState<string | null>(address || null);
+  const [userDeliveryDate, setUserDeliveryDate] = useState<string | null>(deliveryDate || null);
+  const [form, setForm] = useState({
+    name: name || '',
+    phone: phone || '',
+    email: email || '',
+    address: address || '',
+    deliveryDate: deliveryDate || '',
+  });
 
   useEffect(() => {
     const fetchTailors = async () => {
@@ -101,6 +116,78 @@ const Measurements = () => {
     setMeasurements({ ...measurements, [field]: value });
   };
 
+  const handleCompletePayment = async () => {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      Alert.alert("Error", "User not authenticated");
+      console.log("User not authenticated:", userError);
+      return;
+    }
+
+    const { error } = await supabase.from("Orders").insert({
+      user_id: user.id,
+      name: form.name,
+      phone: form.phone || null,
+      email: form.email,
+      address: form.address,
+      delivery_date: form.deliveryDate,
+      measurements: {
+        length: measurements.length,
+        neck: measurements.neck,
+        shoulder: measurements.shoulder,
+        armLength: measurements.armLength,
+        biceps: measurements.biceps,
+      },
+    });
+
+    if (error) {
+      Alert.alert("Error", error.message);
+      console.log("Insertion error:", error);
+    } else {
+      setIsModalVisible(true);
+    }
+  };
+
+  const handleSave = async () => {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      Alert.alert("Error", "User not authenticated");
+      console.log("User not authenticated:", userError);
+      return;
+    }
+
+    const { error } = await supabase.from("Orders").insert({
+      user_id: user.id,
+      name: form.name,
+      phone: form.phone || null,
+      email: form.email,
+      address: form.address,
+      delivery_date: form.deliveryDate,
+      measurements: {
+        length: measurements.length,
+        neck: measurements.neck,
+        shoulder: measurements.shoulder,
+        armLength: measurements.armLength,
+        biceps: measurements.biceps,
+      },
+    });
+
+    if (error) {
+      Alert.alert("Error", error.message);
+      console.log("Insertion error:", error);
+    } else {
+      Alert.alert("Success", "Data saved successfully");
+    }
+  };
+
   return (
     <View style={tw`flex-1`}>
       <View style={tw`flex-1 p-4`}>
@@ -116,8 +203,69 @@ const Measurements = () => {
             <TouchableOpacity style={tw`bg-blue-500 p-4 rounded mb-2`} onPress={() => handleStep1('home')}>
               <Text style={tw`text-white text-center`}>Get Measured at Home by a Tailor</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={tw`bg-green-500 p-4 rounded`} onPress={() => handleStep1('custom')}>
-              <Text style={tw`text-white text-center`}>Custom Measuring</Text>
+
+            {/* Show Measurements */}
+            <Text style={tw`text-lg font-bold mt-4`}>Measurements</Text>
+            <TextInput
+              style={tw`border p-2 mb-4`}
+              placeholder="Length"
+              value={measurements.length}
+              onChangeText={(text) => handleMeasurementChange('length', text)}
+            />
+            <TextInput
+              style={tw`border p-2 mb-4`}
+              placeholder="Neck"
+              value={measurements.neck}
+              onChangeText={(text) => handleMeasurementChange('neck', text)}
+            />
+            <TextInput
+              style={tw`border p-2 mb-4`}
+              placeholder="Shoulder"
+              value={measurements.shoulder}
+              onChangeText={(text) => handleMeasurementChange('shoulder', text)}
+            />
+            <TextInput
+              style={tw`border p-2 mb-4`}
+              placeholder="Arm Length"
+              value={measurements.armLength}
+              onChangeText={(text) => handleMeasurementChange('armLength', text)}
+            />
+            <TextInput
+              style={tw`border p-2 mb-4`}
+              placeholder="Biceps"
+              value={measurements.biceps}
+              onChangeText={(text) => handleMeasurementChange('biceps', text)}
+            />
+
+            {/* Add Name, Email, Address, and Delivery Date if null */}
+            <TextInput
+              style={tw`border p-2 mb-4`}
+              placeholder="Name"
+              value={form.name}
+              onChangeText={(text) => setForm({ ...form, name: text })}
+            />
+            <TextInput
+              style={tw`border p-2 mb-4`}
+              placeholder="Email"
+              value={form.email}
+              onChangeText={(text) => setForm({ ...form, email: text })}
+            />
+            <TextInput
+              style={tw`border p-2 mb-4`}
+              placeholder="Address"
+              value={form.address}
+              onChangeText={(text) => setForm({ ...form, address: text })}
+            />
+            <TextInput
+              style={tw`border p-2 mb-4`}
+              placeholder="Delivery Date"
+              value={form.deliveryDate}
+              onChangeText={(text) => setForm({ ...form, deliveryDate: text })}
+            />
+
+            {/* Save Button */}
+            <TouchableOpacity style={tw`bg-blue-500 p-2 rounded`} onPress={handleSave}>
+              <Text style={tw`text-white text-center`}>Save</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -162,10 +310,8 @@ const Measurements = () => {
             <View style={tw`flex-row justify-between mb-4`}>
               <Text style={tw`text-lg font-bold`}>Step {bookingStep} of 4</Text>
             </View>
-
             {bookingStep === 1 && (
               <View>
-                <Text style={tw`text-lg font-bold mb-4`}>Measurements</Text>
                 <Text style={tw`text-sm mb-2`}>Pickup Date:</Text>
                 <TextInput
                   style={tw`border p-2 mb-4`}
@@ -180,9 +326,6 @@ const Measurements = () => {
                   value={deliveryDate || ''}
                   onChangeText={setDeliveryDate}
                 />
-                <TouchableOpacity style={tw`bg-blue-500 p-2 rounded mb-2`} onPress={handleAddMeasurements}>
-                  <Text style={tw`text-white text-center`}>Add Measurements</Text>
-                </TouchableOpacity>
                 {selectedCategory && (
                   <View>
                     <Text style={tw`text-sm mb-2`}>Selected Category: {selectedCategory}</Text>
@@ -220,28 +363,49 @@ const Measurements = () => {
                 )}
               </View>
             )}
-
             {bookingStep === 2 && (
               <View>
                 <Text style={tw`text-lg font-bold mb-4`}>Location</Text>
                 {/* Add location input fields here */}
               </View>
             )}
-
             {bookingStep === 3 && (
               <View>
                 <Text style={tw`text-lg font-bold mb-4`}>Summary</Text>
-                {/* Add summary details here */}
+                <Text style={tw`text-sm mb-2`}>Pickup Date: {pickupDate}</Text>
+                <Text style={tw`text-sm mb-2`}>Delivery Date: {deliveryDate}</Text>
+                {selectedCategory && (
+                  <Text style={tw`text-sm mb-2`}>Selected Category: {selectedCategory}</Text>
+                )}
+                <Text style={tw`text-sm mb-2`}>Length: {measurements.length}</Text>
+                <Text style={tw`text-sm mb-2`}>Neck: {measurements.neck}</Text>
+                <Text style={tw`text-sm mb-2`}>Shoulder: {measurements.shoulder}</Text>
+                <Text style={tw`text-sm mb-2`}>Arm Length: {measurements.armLength}</Text>
+                <Text style={tw`text-sm mb-2`}>Biceps: {measurements.biceps}</Text>
+                {selectedLocation && (
+                  <Text style={tw`text-sm mb-2`}>Location: Latitude {selectedLocation.latitude}, Longitude {selectedLocation.longitude}</Text>
+                )}
+                <View style={tw`mb-4`}>
+                  <Text style={tw`font-bold`}>Contact Details</Text>
+                  <Text>Name: {form.name}</Text>
+                  <Text>Phone: {form.phone}</Text>
+                  <Text>Email: {form.email}</Text>
+                </View>
+                <View style={tw`mb-4`}>
+                  <Text style={tw`font-bold`}>Address</Text>
+                  <Text>{form.address}</Text>
+                </View>
               </View>
             )}
-
             {bookingStep === 4 && (
               <View>
                 <Text style={tw`text-lg font-bold mb-4`}>Payment</Text>
                 {/* Add payment details here */}
+                <TouchableOpacity style={tw`bg-green-500 p-2 rounded`} onPress={handleCompletePayment}>
+                  <Text style={tw`text-white text-center`}>Complete Payment</Text>
+                </TouchableOpacity>
               </View>
             )}
-
             <View style={tw`flex-row justify-between mt-4`}>
               {bookingStep > 1 && (
                 <TouchableOpacity style={tw`bg-gray-500 p-2 rounded`} onPress={handlePreviousBookingStep}>
@@ -253,16 +417,10 @@ const Measurements = () => {
                   <Text style={tw`text-white text-center`}>Next</Text>
                 </TouchableOpacity>
               )}
-              {bookingStep === 4 && (
-                <TouchableOpacity style={tw`bg-green-500 p-2 rounded`}>
-                  <Text style={tw`text-white text-center`}>Complete Payment</Text>
-                </TouchableOpacity>
-              )}
             </View>
           </View>
         )}
       </View>
-
       {/* Sticky Footer */}
       {step === 3 && selectedTailor && (
         <View style={tw`absolute bottom-0 left-0 right-0 bg-[#00046B] bg-opacity-75 py-6 px-11`}>
@@ -271,6 +429,21 @@ const Measurements = () => {
           </TouchableOpacity>
         </View>
       )}
+      {/* Modal for success message */}
+      <Modal
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <View style={tw`flex-1 justify-center items-center bg-black bg-opacity-50`}>
+          <View style={tw`bg-white p-6 rounded-lg`}>
+            <Text style={tw`text-lg font-bold mb-4`}>Appointment Booked Successfully</Text>
+            <TouchableOpacity style={tw`bg-blue-500 p-2 rounded`} onPress={() => setIsModalVisible(false)}>
+              <Text style={tw`text-white text-center`}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };

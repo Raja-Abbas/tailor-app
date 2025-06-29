@@ -1,8 +1,9 @@
 import { useSupabase } from "@/hooks/supabase";
-import { useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
-import tw from "twrnc";
 import { SupabaseClient } from "@supabase/supabase-js";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { FlatList, Image, Pressable, Text, View } from "react-native";
+import tw from "twrnc";
 
 type Men = {
     id: string;
@@ -13,6 +14,7 @@ type Men = {
 export default function Men() {
     const [men, setMen] = useState<Men[]>([]);
     const supabase: SupabaseClient = useSupabase();
+    const router = useRouter();
 
     useEffect(() => {
         const fetchTailors = async () => {
@@ -36,16 +38,21 @@ export default function Men() {
             <FlatList
                 data={men}
                 keyExtractor={(item) => item.id}
+                numColumns={2}
+                contentContainerStyle={tw`flex-row flex-wrap`}
                 renderItem={({ item }) => (
-                    <View style={tw`flex-row items-center bg-white p-4 mb-4 mx-4 rounded-[10px] shadow-sm`}>
+                    <Pressable
+                        onPress={() => router.push(`/mens/${item.id}`)}
+                        style={tw`flex-col items-center bg-white p-4 mb-4 mx-4 shadow-sm`}
+                    >
                         <Image
                             source={{ uri: item.image }}
-                            style={tw`w-[50px] h-[50px] rounded-full mr-4`}
+                            style={tw`w-[50px] h-[50px]`}
                         />
                         <View style={tw`flex-1`}>
                             <Text style={tw`text-[16px] font-semibold`}>{item.title}</Text>
                         </View>
-                    </View>
+                    </Pressable>
                 )}
             />
         </View>

@@ -33,7 +33,7 @@ const Measurements = () => {
   });
   const [isModalVisible, setIsModalVisible] = useState(false);
   const supabase: SupabaseClient = useSupabase();
-  const { name, phone, email, address, deliveryDate: paramDeliveryDate } = useLocalSearchParams();
+  const { name, phone, email, address, deliveryDate: paramDeliveryDate, tailor } = useLocalSearchParams();
   const [selectedLocation, setSelectedLocation] = useState<{ latitude: number, longitude: number } | null>(null);
   const [userName, setUserName] = useState<string | null>(name || null);
   const [userEmail, setUserEmail] = useState<string | null>(email || null);
@@ -60,6 +60,14 @@ const Measurements = () => {
 
     fetchTailors();
   }, [supabase]);
+
+  useEffect(() => {
+    if (tailor) {
+      const parsedTailor = JSON.parse(tailor);
+      setSelectedTailor(parsedTailor);
+      setStep(3);
+    }
+  }, [tailor]);
 
   const handleStep1 = (option) => {
     if (option === 'home') {

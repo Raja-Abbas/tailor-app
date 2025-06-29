@@ -1,8 +1,9 @@
 import { useSupabase } from "@/hooks/supabase";
-import { useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
-import tw from "twrnc";
+import { useNavigation } from '@react-navigation/native';
 import { SupabaseClient } from "@supabase/supabase-js";
+import { useEffect, useState } from "react";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import tw from "twrnc";
 
 type Tailor = {
   id: string;
@@ -17,6 +18,7 @@ type Tailor = {
 export default function Tailors() {
   const [tailors, setTailors] = useState<Tailor[]>([]);
   const supabase: SupabaseClient = useSupabase();
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchTailors = async () => {
@@ -41,7 +43,10 @@ export default function Tailors() {
         data={tailors}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={tw`flex-row items-center bg-white p-4 mb-4 mx-4 rounded-[10px] shadow-sm`}>
+          <TouchableOpacity 
+            onPress={() => navigation.navigate('measurements', { tailor: JSON.stringify(item) })}
+            style={tw`flex-row items-center bg-white p-4 mb-4 mx-4 rounded-[10px] shadow-sm`}
+          >
             <Image
               source={{ uri: item.image }}
               style={tw`w-[50px] h-[50px] rounded-full mr-4`}
@@ -53,7 +58,7 @@ export default function Tailors() {
               <Text style={tw`text-[14px] text-gray-600`}>{item.distance} away</Text>
             </View>
             <Text style={tw`text-[14px] font-semibold`}>{item.rating} ★</Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>

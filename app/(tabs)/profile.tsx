@@ -12,6 +12,7 @@ import {
   View,
 } from "react-native";
 import tw from "twrnc";
+import Svg, { Path } from "react-native-svg";
 
 export default function Profile() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -40,7 +41,9 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchUserEmail = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (user) {
         setPersonalInfo((prev) => ({ ...prev, email: user.email || "" }));
       }
@@ -90,8 +93,8 @@ export default function Profile() {
                 if (error) {
                   alert(`Logout failed: ${error.message}`);
                 } else {
-                  alert('Logged out successfully!');
-                  router.replace('/(auth)');
+                  alert("Logged out successfully!");
+                  router.replace("/(auth)");
                 }
               }}
             >
@@ -180,45 +183,17 @@ export default function Profile() {
         <TouchableOpacity
           style={tw`bg-gray-100 p-4 rounded-lg mb-4 flex flex-row justify-between items-center`}
           onPress={() => {
-            setActiveSection("My Profile");
-            setModalVisible(true);
-          }}
-        >
-          <Text style={tw`text-xl font-bold`}>My Profile</Text>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M8.00589 21.3079L6.94189 20.2439L15.1869 11.9999L6.94189 3.75589L8.00589 2.69189L17.3139 11.9999L8.00589 21.3079Z"
-              fill="#878787"
-            />
-          </svg>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={tw`bg-gray-100 p-4 rounded-lg mb-4 flex flex-row justify-between items-center`}
-          onPress={() => {
             setActiveSection("Address");
             setModalVisible(true);
           }}
         >
           <Text style={tw`text-xl font-bold`}>Address</Text>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
+          <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+            <Path
               d="M8.00589 21.3079L6.94189 20.2439L15.1869 11.9999L6.94189 3.75589L8.00589 2.69189L17.3139 11.9999L8.00589 21.3079Z"
               fill="#878787"
             />
-          </svg>
+          </Svg>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -229,18 +204,12 @@ export default function Profile() {
           }}
         >
           <Text style={tw`text-xl font-bold`}>My Wallet</Text>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
+          <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+            <Path
               d="M8.00589 21.3079L6.94189 20.2439L15.1869 11.9999L6.94189 3.75589L8.00589 2.69189L17.3139 11.9999L8.00589 21.3079Z"
               fill="#878787"
             />
-          </svg>
+          </Svg>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -251,18 +220,12 @@ export default function Profile() {
           }}
         >
           <Text style={tw`text-xl font-bold`}>Order History</Text>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
+          <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+            <Path
               d="M8.00589 21.3079L6.94189 20.2439L15.1869 11.9999L6.94189 3.75589L8.00589 2.69189L17.3139 11.9999L8.00589 21.3079Z"
               fill="#878787"
             />
-          </svg>
+          </Svg>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -273,18 +236,28 @@ export default function Profile() {
           }}
         >
           <Text style={tw`text-xl font-bold`}>Settings</Text>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
+          <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+            <Path
               d="M8.00589 21.3079L6.94189 20.2439L15.1869 11.9999L6.94189 3.75589L8.00589 2.69189L17.3139 11.9999L8.00589 21.3079Z"
               fill="#878787"
             />
-          </svg>
+          </Svg>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={tw`bg-gray-100 p-4 rounded-lg mb-4 flex flex-row justify-between items-center`}
+          onPress={() => {
+            setActiveSection("Settings");
+            setModalVisible(true);
+          }}
+        >
+          <Text style={tw`text-xl font-bold`}>Settings</Text>
+           <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+            <Path
+              d="M8.00589 21.3079L6.94189 20.2439L15.1869 11.9999L6.94189 3.75589L8.00589 2.69189L17.3139 11.9999L8.00589 21.3079Z"
+              fill="#878787"
+            />
+          </Svg>
         </TouchableOpacity>
       </View>
 

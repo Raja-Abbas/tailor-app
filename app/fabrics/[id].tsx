@@ -1,7 +1,7 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSupabase } from "@/hooks/supabase";
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from "react";
-import { Image, ScrollView, Text, View, Pressable } from "react-native";
+import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import tw from "twrnc";
 
 const dummyReviews = [
@@ -10,21 +10,30 @@ const dummyReviews = [
   { id: 3, user: "Zain", rating: 4.5, comment: "Color was exactly as shown." },
 ];
 
+// Match the Fabric type from the list page
+interface Fabric {
+  id: string;
+  title: string;
+  Image: string;
+  description?: string;
+  price?: string;
+}
+
 export default function FabricDetail() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const supabase = useSupabase();
-  const [fabric, setFabric] = useState(null);
+  const [fabric, setFabric] = useState<Fabric | null>(null);
 
   useEffect(() => {
     const fetchFabric = async () => {
       const { data, error } = await supabase.from("Fabric").select("*").eq("id", id).single();
       if (error) console.error("Error fetching fabric:", error);
-      else setFabric(data);
+      else setFabric(data as Fabric);
     };
 
     if (id) fetchFabric();
-  }, [id]);
+  }, [id, supabase]);
 
   if (!fabric) return <Text style={tw`m-4`}>Loading...</Text>;
 

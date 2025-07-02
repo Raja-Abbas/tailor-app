@@ -39,6 +39,7 @@ export default function TabLayout() {
               marginBottom: 10,
               borderRadius: 50,
               height: 66,
+              paddingTop: 8,
             },
           }),
         }}
@@ -72,7 +73,7 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => (
               <Image
                 source={CartImage}
-                style={{ width: 28, height: 28, tintColor: "#fff" }}
+                style={{ width: 28, height: 28, tintColor: "#fff"}}
               />
             ),
           }}
@@ -85,7 +86,7 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => (
               <Image
                 source={ProfileImage}
-                style={{ width: 28, height: 28, tintColor: "#fff" }}
+                style={{ width: 28, height: 28, tintColor: "#fff"}}
               />
             ),
           }}

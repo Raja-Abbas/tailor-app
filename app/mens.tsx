@@ -39,18 +39,19 @@ export default function Men() {
                 data={men}
                 keyExtractor={(item) => item.id}
                 numColumns={2}
-                contentContainerStyle={tw`flex-row flex-wrap`}
+                contentContainerStyle={tw`flex-row flex-wrap justify-center`}
+                columnWrapperStyle={tw`justify-center`}
                 renderItem={({ item }) => (
                     <Pressable
                         onPress={() => router.push(`/mens/${item.id}`)}
-                        style={tw`flex-col items-center bg-white p-4 mb-4 mx-4 shadow-sm`}
+                        style={tw`min-w-[135px] bg-white p-4 m-2 rounded-[10px] items-center shadow-sm`}
                     >
                         <Image
                             source={{ uri: item.image }}
-                            style={tw`w-[50px] h-[50px]`}
+                            style={tw`w-[90px] h-[90px] rounded-[10px] mb-2`}
                         />
-                        <View style={tw`flex-1`}>
-                            <Text style={tw`text-[16px] font-semibold`}>{item.title}</Text>
+                        <View style={tw`flex-1 items-center`}>
+                            <Text style={tw`text-[16px] font-semibold text-center`}>{item.title}</Text>
                         </View>
                     </Pressable>
                 )}

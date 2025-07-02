@@ -33,6 +33,11 @@ const categories = [
     name: 'Kids',
     image: require('../../assets/images/ruler-combined-6.png'),
   },
+  {
+    id: '6',
+    name: 'Alter your clothes',
+    image: require('../../assets/images/ruler-combined-3.png'),
+  },  
 ];
 
 type Tailor = {
@@ -109,7 +114,7 @@ export default function HomeScreen() {
         ))}
       </View>
       <View style={tw`flex-row justify-between items-center mx-4 mt-[32px] mb-[19px]`}>
-        <Text style={tw`text-[16px] font-semibold`}>Top 5 Tailors</Text>
+        <Text style={tw`text-[16px] font-semibold`}>Top Tailors</Text>
         <TouchableOpacity onPress={() => navigation.navigate('tailors')}>
           <Text style={tw`text-[14px] text-blue-500`}>See All</Text>
         </TouchableOpacity>
@@ -127,7 +132,7 @@ export default function HomeScreen() {
               <Text style={tw`text-[16px] font-semibold`}>{item.name}</Text>
               <Text style={tw`text-[14px] text-gray-600`}>{item.description}</Text>
               <Text style={tw`text-[14px] text-gray-600`}>{item.location}</Text>
-              <Text style={tw`text-[14px] text-gray-600`}>{item.distance} away</Text>
+              <Text style={tw`text-[14px] text-gray-600`}>{item.distance}KM away</Text>
             </View>
           </TouchableOpacity>
         ))}

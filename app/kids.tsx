@@ -1,8 +1,9 @@
 import { useSupabase } from "@/hooks/supabase";
-import { useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
-import tw from "twrnc";
 import { SupabaseClient } from "@supabase/supabase-js";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { FlatList, Image, Pressable, Text, View } from "react-native";
+import tw from "twrnc";
 
 type Kids = {
     id: string;
@@ -13,6 +14,7 @@ type Kids = {
 export default function Kids() {
     const [kids, setKids] = useState<Kids[]>([]);
     const supabase: SupabaseClient = useSupabase();
+    const router = useRouter();
 
     useEffect(() => {
         const fetchTailors = async () => {
@@ -36,16 +38,22 @@ export default function Kids() {
             <FlatList
                 data={kids}
                 keyExtractor={(item) => item.id}
+                numColumns={2}
+                contentContainerStyle={tw`flex-row flex-wrap justify-center`}
+                columnWrapperStyle={tw`justify-center`}
                 renderItem={({ item }) => (
-                    <View style={tw`flex-row items-center bg-white p-4 mb-4 mx-4 rounded-[10px] shadow-sm`}>
+                    <Pressable
+                        onPress={() => router.push(`/kids/${item.id}`)}
+                        style={tw`min-w-[135px] bg-white p-4 m-2 rounded-[10px] items-center shadow-sm`}
+                    >
                         <Image
                             source={{ uri: item.image }}
-                            style={tw`w-[50px] h-[50px] rounded-full mr-4`}
+                            style={tw`w-[90px] h-[90px] rounded-[10px] mb-2`}
                         />
-                        <View style={tw`flex-1`}>
-                            <Text style={tw`text-[16px] font-semibold`}>{item.title}</Text>
+                        <View style={tw`flex-1 items-center`}>
+                            <Text style={tw`text-[16px] font-semibold text-center`}>{item.title}</Text>
                         </View>
-                    </View>
+                    </Pressable>
                 )}
             />
         </View>

@@ -1,7 +1,7 @@
 import { supabase } from '@/hooks/supabase';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -21,6 +21,7 @@ export default function SignUp() {
 
   return (
     <View style={styles.container}>
+      <Image source={require('../../assets/images/logo.png')} style={styles.logo} />
       <Text style={styles.title}>Sign Up</Text>
       <TextInput
         style={styles.input}
@@ -57,9 +58,16 @@ const styles = StyleSheet.create({
     minWidth: 300,
     margin: 'auto',
   },
+  logo: {
+    width: 180,
+    height: 100,
+    resizeMode: 'contain',
+    marginBottom: -4,
+  },
   title: {
     fontSize: 24,
     marginBottom: 20,
+    fontWeight: 'bold',
   },
   input: {
     width: '100%',
@@ -68,14 +76,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
+    borderRadius: 6,
   },
   button: {
     width: '100%',
     height: 40,
-    backgroundColor: 'blue',
+    backgroundColor: '#000080',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
+    borderRadius: 10,
   },
   buttonText: {
     color: 'white',
@@ -85,7 +95,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   linkText: {
-    color: 'blue',
+    color: '#000080',
     fontSize: 16,
   },
 }); 

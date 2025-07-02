@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 13,
   },
+  
   iconRow: {
     flexDirection: 'row',
     alignItems: 'center',
